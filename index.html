@@ -176,7 +176,6 @@ main{max-width:560px;margin:0 auto;padding:8px}
       <div class="tiles" id="tiles" role="group" aria-label="אותיות לבחירה"></div>
       <div class="name-reveal" id="nameReveal">
         <div class="name-big" id="nameBig"></div>
-        <button class="btn nextbig" id="btnNext" type="button">הבא</button>
       </div>
       <div class="fb" id="fb"></div>
     </div>
@@ -273,6 +272,7 @@ const $=s=>document.querySelector(s);
 let muted=false, currentAudio=null, speakGen=0, speakQueueBusy=false, audioCtx=null;
 let inputLocked=false, queue=[], idx=0, slots=[], tiles=[], filledCount=0, lastFirstId=null;
 let wrongStreak=0, awaitingNext=false;
+let autoNextTimer=null, autoNextGen=0;
 
 function unlockAudio(){
   try{if(!audioCtx)audioCtx=new (window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==="suspended")audioCtx.resume();}catch(e){}
@@ -463,7 +463,12 @@ function startGame(){
   show("sc-play");
   loadRound();
 }
+function clearAutoNext(){
+  if(autoNextTimer){clearTimeout(autoNextTimer);autoNextTimer=null;}
+  autoNextGen+=1;
+}
 function hideReveal(){
+  clearAutoNext();
   const nr=$("#nameReveal"); if(nr) nr.classList.remove("on");
   const pw=$("#photoWrap"); if(pw) pw.classList.remove("dim");
   awaitingNext=false;
@@ -647,11 +652,23 @@ function onNameComplete(){
   const pw=$("#photoWrap"); if(pw) pw.classList.add("dim");
   $("#nameBig").textContent=item.label;
   $("#nameReveal").classList.add("on");
-  speakKeys([item.say, pick(["ok","ok2","ok3"])], null, 180);
+  const my=++autoNextGen;
+  const scheduleAdvance=()=>{
+    if(my!==autoNextGen||!awaitingNext) return;
+    if(autoNextTimer){clearTimeout(autoNextTimer);autoNextTimer=null;}
+    autoNextTimer=setTimeout(()=>{
+      if(my!==autoNextGen||!awaitingNext) return;
+      autoNextTimer=null;
+      goNext();
+    }, 1700);
+  };
+  speakKeys([item.say, pick(["ok","ok2","ok3"])], scheduleAdvance, 180);
 }
 
 function goNext(){
   if(!awaitingNext) return;
+  awaitingNext=false;
+  clearAutoNext();
   idx++;
   if(idx>=queue.length){
     hideReveal();
@@ -691,8 +708,8 @@ $("#homeYes").onclick=()=>{
   stopSpeak();inputLocked=false;awaitingNext=false;hideReveal();show("sc-start");
 };
 $("#homeNo").onclick=()=>$("#homeConfirm").classList.remove("on");
-$("#btnNext").onclick=()=>{unlockAudio(); goNext();};
 $("#btnReplay").onclick=()=>{
+  if(awaitingNext||inputLocked)return;
   const item=queue[idx];if(!item)return;
   speakKeys([item.say]);
 };
@@ -700,7 +717,18 @@ $("#btnMute").onclick=()=>{
   muted=!muted;
   $("#btnMute").setAttribute("aria-pressed", muted?"true":"false");
   $("#btnMute").textContent=muted?"🔇":"🔈";
-  if(muted) stopSpeak();
+  if(muted){
+    stopSpeak();
+    // If name-complete narration was cut short, still auto-advance after the pause
+    if(awaitingNext && !autoNextTimer){
+      const my=autoNextGen;
+      autoNextTimer=setTimeout(()=>{
+        if(my!==autoNextGen||!awaitingNext) return;
+        autoNextTimer=null;
+        goNext();
+      }, 1700);
+    }
+  }
 };
 $("#btnHelp").onclick=()=>{$("#helpPanel").classList.add("on"); if(!muted) speakKeys(["help"]);};
 $("#helpClose").onclick=()=>{$("#helpPanel").classList.remove("on"); stopSpeak();};
