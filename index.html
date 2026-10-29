@@ -20,7 +20,7 @@ header h1{margin:0;font-size:17px;font-weight:750;flex:1;line-height:1.2}
 main{max-width:560px;margin:0 auto;padding:8px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:12px;margin:0 0 10px}
 .screen{display:none}.screen.on{display:block}
-.startwrap{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:28px 16px 20px;min-height:58dvh}
+.startwrap{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:28px 16px 20px;min-height:50dvh}
 .startwrap h2{margin:0 0 6px;font-size:22px;font-weight:800;color:var(--navy)}
 .startsub{margin:0 0 18px;font-size:15px;color:var(--mute);font-weight:600}
 .btn{border:1px solid var(--ink);background:#fff;color:var(--ink);border-radius:12px;padding:7px 14px;min-height:42px;font:700 14.5px system-ui;cursor:pointer}
@@ -30,10 +30,15 @@ main{max-width:560px;margin:0 auto;padding:8px}
 .btn.sm{min-height:44px;font-size:15px;padding:8px 12px}
 .priv{font-size:12px;color:var(--mute);text-align:center;margin:10px 0 0;line-height:1.35}
 .foot{max-width:560px;margin:6px auto 0;padding:4px 12px;font-size:10px;color:var(--mute);text-align:center;line-height:1.4}
-.lvrow{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:0 0 16px;width:100%}
-.lvbtn{border:1.5px solid var(--navy);background:#fff;color:var(--navy);border-radius:999px;min-height:40px;padding:6px 14px;font:700 14px system-ui;cursor:pointer}
-.lvbtn.on{background:var(--navy);color:#fff}
-.lvbtn[disabled]{opacity:.45;cursor:not-allowed;border-style:dashed}
+/* Level picker */
+.lv-pick{display:flex;flex-direction:column;gap:10px;width:100%;max-width:340px;margin:0 auto}
+.lv-card{display:flex;align-items:center;gap:12px;text-align:right;border:2px solid var(--navy);background:#fff;border-radius:16px;padding:12px 14px;min-height:64px;cursor:pointer;touch-action:manipulation;font:inherit;color:var(--navy);width:100%}
+.lv-card:active{transform:scale(.98);background:#f0f5fb}
+.lv-stars{font-size:22px;letter-spacing:1px;min-width:7.5em;text-align:center;flex:none}
+.lv-meta{flex:1;display:flex;flex-direction:column;align-items:flex-start;gap:2px}
+.lv-name{font:800 17px system-ui;color:var(--navy)}
+.lv-desc{font:600 12.5px system-ui;color:var(--mute);line-height:1.3}
+.lv-back{margin:14px auto 0;display:block}
 .photo-wrap{width:100%;max-width:320px;margin:0 auto 10px;border-radius:16px;overflow:hidden;border:2px solid var(--line);background:#e8e6de;aspect-ratio:1/1;display:flex;align-items:center;justify-content:center}
 .photo-wrap img{width:100%;height:100%;object-fit:cover;display:block}
 .prog{font:700 14px system-ui;color:var(--navy);text-align:center;margin:0 0 8px}
@@ -42,7 +47,10 @@ main{max-width:560px;margin:0 auto;padding:8px}
 .slot{width:34px;height:42px;border:2px dashed var(--navy);border-radius:10px;background:#fffdf6;display:inline-flex;align-items:center;justify-content:center;font:800 22px/1 "Times New Roman",serif;color:var(--navy);flex:none}
 .slot.digraph{width:44px;font-size:20px;letter-spacing:-1px}
 .tile.digraph{font-size:22px;letter-spacing:-1px}
-.slot.filled{border-style:solid;border-color:var(--good);background:#eef8f1;animation:pop .28s ease}
+.slot.filled{border-style:solid;border-color:var(--good);background:#eef8f1;animation:pop .28s ease;color:var(--navy)}
+.slot.given{border-style:solid;border-color:#b8c0cc;background:#eef0f3;color:#8a93a3;font-weight:700;opacity:.92}
+.slot.next{border-style:solid;border-color:var(--org);background:#fff4e6;box-shadow:0 0 0 3px rgba(232,134,42,.28);animation:pulseNext 1.1s ease-in-out infinite}
+@keyframes pulseNext{0%,100%{box-shadow:0 0 0 2px rgba(232,134,42,.25)}50%{box-shadow:0 0 0 5px rgba(232,134,42,.4)}}
 .tiles.hidden{display:none!important}
 @keyframes pop{0%{transform:scale(.6)}70%{transform:scale(1.12)}100%{transform:scale(1)}}
 .tiles{display:grid;grid-template-columns:repeat(7,1fr);gap:7px;width:100%;max-width:420px;margin:0 auto}
@@ -58,24 +66,26 @@ main{max-width:560px;margin:0 auto;padding:8px}
 .endbtns{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;justify-content:center}
 .endbtns .btn{min-height:48px;font-size:16px;min-width:140px}
 .flying{position:fixed;z-index:100;pointer-events:none;border:2px solid var(--good);background:#eef8f1;border-radius:12px;display:flex;align-items:center;justify-content:center;font:800 26px/1 "Times New Roman",serif;color:var(--navy);transition:transform .42s cubic-bezier(.2,.8,.2,1),opacity .42s;will-change:transform,opacity}
-.bar{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0 0 8px}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0 0 8px;flex-wrap:wrap}
 .replay{border:1px solid var(--navy);background:#fff;color:var(--navy);border-radius:999px;min-height:40px;padding:4px 12px;font:700 14px system-ui;cursor:pointer}
+.lv-tag{font:700 12px system-ui;color:var(--mute);background:#eef0f3;border-radius:999px;padding:3px 10px}
 .explain{position:fixed;inset:0;z-index:50;background:var(--bg);overflow-y:auto;display:none}
 .explain.on{display:block}
 .xbar{position:sticky;top:0;background:rgba(245,244,240,.96);border-bottom:1px solid var(--line);padding:8px 12px;z-index:2;display:flex;gap:8px;align-items:center}
 .xin{max-width:560px;margin:0 auto;padding:14px 16px 28px}
 .xin h2{font-size:20px;color:var(--navy);margin:0 0 10px}
-.idea{background:#eef4fb;border-radius:10px;padding:12px 14px;font-size:16px;font-weight:600;color:var(--navy)}
+.idea{background:#eef4fb;border-radius:10px;padding:12px 14px;font-size:16px;font-weight:600;color:var(--navy);margin:0 0 10px}
 @media(max-width:400px){
-  .startwrap{padding:20px 12px;min-height:52dvh}
+  .startwrap{padding:20px 12px;min-height:46dvh}
   .startwrap h2{font-size:20px}
   .btn.startbig{min-height:68px;font-size:26px;max-width:100%}
   .slot{width:28px;height:36px;font-size:18px}
   .slot.digraph{width:36px;font-size:16px}
-  .photo-wrap{max-width:220px}
-  .tile{min-height:46px;font-size:22px}
   .photo-wrap{max-width:260px}
+  .tile{min-height:46px;font-size:22px}
   .tiles{gap:5px}
+  .lv-stars{font-size:18px;min-width:6.5em}
+  .lv-name{font-size:15px}
 }
 @media(min-width:600px){
   .slot{width:40px;height:48px;font-size:26px}
@@ -85,7 +95,7 @@ main{max-width:560px;margin:0 auto;padding:8px}
 }
 @media(prefers-reduced-motion:reduce){
   .flying{transition:none!important}
-  .slot.filled,.tile.bad{animation:none!important}
+  .slot.filled,.tile.bad,.slot.next{animation:none!important}
 }
 </style>
 </head>
@@ -106,19 +116,43 @@ main{max-width:560px;margin:0 auto;padding:8px}
       <div class="startwrap">
         <h2>שמות המשפחה</h2>
         <p class="startsub">רואים תמונה · משלימים את השם באותיות</p>
-        <div class="lvrow" role="group" aria-label="רמת קושי">
-          <button class="lvbtn on" id="lv1" type="button" data-lv="1">רמה 1 · בכל סדר</button>
-          <button class="lvbtn" id="lv2" type="button" data-lv="2" disabled title="בקרוב">רמה 2 · לפי הסדר · בקרוב</button>
-        </div>
         <button class="btn startbig" id="btnStart" type="button">התחל</button>
       </div>
       <p class="priv">🔒 אין שמירת נתונים · אין עוגיות · קישור פרטי למשפחה</p>
     </div>
   </section>
+  <section class="screen" id="sc-levels">
+    <div class="card">
+      <div class="startwrap" style="min-height:auto;padding:18px 12px 12px">
+        <h2>בחרו רמה</h2>
+        <p class="startsub" style="margin-bottom:14px">⭐ קל ← ⭐⭐⭐⭐ קשה</p>
+        <div class="lv-pick" role="group" aria-label="רמת קושי">
+          <button class="lv-card" type="button" data-lv="1">
+            <span class="lv-stars">⭐</span>
+            <span class="lv-meta"><span class="lv-name">רמה 1 · אות אחת</span><span class="lv-desc">בכל מילה חסרה רק אות אחת</span></span>
+          </button>
+          <button class="lv-card" type="button" data-lv="2">
+            <span class="lv-stars">⭐⭐</span>
+            <span class="lv-meta"><span class="lv-name">רמה 2 · רמז אחד</span><span class="lv-desc">בכל מילה מוצגת רק אות אחת</span></span>
+          </button>
+          <button class="lv-card" type="button" data-lv="3">
+            <span class="lv-stars">⭐⭐⭐</span>
+            <span class="lv-meta"><span class="lv-name">רמה 3 · הכל ריק</span><span class="lv-desc">כל האותיות חסרות · בכל סדר</span></span>
+          </button>
+          <button class="lv-card" type="button" data-lv="4">
+            <span class="lv-stars">⭐⭐⭐⭐</span>
+            <span class="lv-meta"><span class="lv-name">רמה 4 · לפי הסדר</span><span class="lv-desc">כל האותיות · חייבים לפי הסדר</span></span>
+          </button>
+        </div>
+        <button class="btn lv-back" id="btnBackStart" type="button">→ חזרה</button>
+      </div>
+    </div>
+  </section>
   <section class="screen" id="sc-play">
     <div class="card">
       <div class="bar">
-        <span class="prog" id="prog">1 מתוך 4</span>
+        <span class="prog" id="prog">1 מתוך 8</span>
+        <span class="lv-tag" id="lvTag">רמה 1</span>
         <button class="replay" id="btnReplay" type="button" aria-label="השמעה שוב">🔊 שוב</button>
       </div>
       <div class="photo-wrap"><img id="photo" alt="" width="720" height="720"></div>
@@ -130,11 +164,12 @@ main{max-width:560px;margin:0 auto;padding:8px}
   <section class="screen" id="sc-done">
     <div class="card">
       <div class="celeb">
-        <div class="stars">⭐⭐⭐</div>
+        <div class="stars" id="doneStars">⭐⭐⭐</div>
         <h3>כל הכבוד!</h3>
         <p style="color:var(--mute);font-weight:600">השלמתם את כל השמות</p>
         <div class="endbtns">
           <button class="btn pri" id="btnAgain" type="button">עוד פעם</button>
+          <button class="btn" id="btnPickLevel" type="button">בחירת רמה</button>
           <button class="btn" id="btnToStart" type="button">לתפריט</button>
         </div>
       </div>
@@ -146,8 +181,13 @@ main{max-width:560px;margin:0 auto;padding:8px}
     <button class="btn sm" id="helpClose" type="button">→ חזור</button>
     <strong style="flex:1;color:var(--navy)">עזרה</strong>
   </div>
-  <div class="xin"><h2>איך משחקים?</h2>
-    <div class="idea">רואים תמונה. לוחצים על האותיות של השם — אפשר בכל סדר. כל אות נכונה עולה למקומה בשם. אם טועים — נסו שוב.</div>
+  <div class="xin">
+    <h2>איך משחקים?</h2>
+    <div class="idea">רואים תמונה ומשלימים את השם באותיות מהקוביות.</div>
+    <div class="idea">⭐ רמה 1 — בכל מילה חסרה רק אות אחת.</div>
+    <div class="idea">⭐⭐ רמה 2 — בכל מילה מוצגת רק אות אחת (השאר חסרות).</div>
+    <div class="idea">⭐⭐⭐ רמה 3 — הכל ריק, אפשר בכל סדר.</div>
+    <div class="idea">⭐⭐⭐⭐ רמה 4 — הכל ריק, חייבים לפי הסדר (מימין לשמאל).</div>
   </div>
 </div>
 <label id="hapticLab" aria-hidden="true" style="position:fixed;left:-9999px;top:0;width:1px;height:1px;overflow:hidden;opacity:0;pointer-events:none">
@@ -159,16 +199,11 @@ main{max-width:560px;margin:0 auto;padding:8px}
 "use strict";
 const AUDIO="audio/";
 const ALEF="אבגדהוזחטיכלמנסעפצקרשת";
-const LN={
-  "א":"ln_alef","ב":"ln_bet","ג":"ln_gimel","ד":"ln_dalet","ה":"ln_he","ו":"ln_vav",
-  "ז":"ln_zayin","ח":"ln_chet","ט":"ln_tet","י":"ln_yod","כ":"ln_kaf","ל":"ln_lamed",
-  "מ":"ln_mem","נ":"ln_nun","ס":"ln_samekh","ע":"ln_ayin","פ":"ln_pe","צ":"ln_tsadi",
-  "ק":"ln_qof","ר":"ln_resh","ש":"ln_shin","ת":"ln_tav"
-};
-/* Level config — only level 1 exposed; level 2 reserved for "type in order". */
 const LEVELS={
-  1:{id:1, label:"בכל סדר", requireOrder:false},
-  2:{id:2, label:"לפי הסדר", requireOrder:true, comingSoon:true}
+  1:{id:1, stars:"⭐",        label:"רמה 1 · אות אחת",  short:"רמה 1", requireOrder:false, mode:"oneMissing"},
+  2:{id:2, stars:"⭐⭐",      label:"רמה 2 · רמז אחד",  short:"רמה 2", requireOrder:false, mode:"oneShown"},
+  3:{id:3, stars:"⭐⭐⭐",    label:"רמה 3 · הכל ריק",  short:"רמה 3", requireOrder:false, mode:"allMissing"},
+  4:{id:4, stars:"⭐⭐⭐⭐",  label:"רמה 4 · לפי הסדר", short:"רמה 4", requireOrder:true,  mode:"allMissing"}
 };
 let level=1;
 const NAMES=[
@@ -176,19 +211,21 @@ const NAMES=[
   {id:"ima",    label:"אמא יעל",         text:"אמא יעל",         img:"img/ima.jpg",    say:"name_ima",    alt:"תמונת אמא יעל"},
   {id:"aba",    label:"אבא שלז",         text:"אבא שלז",         img:"img/aba.jpg",    say:"name_aba",    alt:"תמונת אבא שלז"},
   {id:"itamar", label:"איתמר",           text:"איתמר",           img:"img/itamar.jpg", say:"name_itamar", alt:"תמונת איתמר"},
+  {id:"alma",   label:"עלמה",            text:"עלמה",            img:"img/alma.jpg",   say:"name_alma",   alt:"תמונת עלמה"},
+  {id:"omer",   label:"עומר",            text:"עומר",            img:"img/omer.jpg",   say:"name_omer",   alt:"תמונת עומר"},
   {id:"chipo",  label:"כלבה צ׳יפו",      text:"כלבה צ׳יפו",      img:"img/chipo.jpg",  say:"name_chipo",  alt:"תמונת כלבה צ׳יפו"},
   {id:"loko",   label:"חתול לוקו",       text:"חתול לוקו",       img:"img/loko.jpg",   say:"name_loko",   alt:"תמונת חתול לוקו"},
   {id:"savta",  label:"סבתא אלי",        text:"סבתא אלי",        img:"img/savta.jpg",  say:"name_savta",  alt:"תמונת סבתא אלי"},
+  {id:"ruchul", label:"סבתא רוחול",      text:"סבתא רוחול",      img:"img/ruchul.jpg", say:"name_ruchul", alt:"תמונת סבתא רוחול"},
   {id:"bibi",   label:"ביבי",            text:"ביבי",            img:"img/bibi.jpg",   say:"name_bibi",   alt:"תמונת ביבי"}
 ];
-/* צ׳ is one grapheme (tsadi + geresh U+05F3) — one slot + one tile showing צ׳.
-   Clearest for age 6: digraph looks like one letter, not a separate geresh mark. */
+/* צ׳ is one grapheme (tsadi + geresh) — one slot + one tile. */
 const TILE_COUNT=14;
 function shuffle(a){const x=a.slice();for(let i=x.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[x[i],x[j]]=[x[j],x[i]]}return x}
 function pick(a){return a[Math.floor(Math.random()*a.length)]}
 const $=s=>document.querySelector(s);
 let muted=false, currentAudio=null, speakGen=0, speakQueueBusy=false, audioCtx=null;
-let inputLocked=false, queue=[], idx=0, slots=[], tiles=[], filledCount=0, nextExpected=0;
+let inputLocked=false, queue=[], idx=0, slots=[], tiles=[], filledCount=0, lastFirstId=null;
 
 function unlockAudio(){
   try{if(!audioCtx)audioCtx=new (window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==="suspended")audioCtx.resume();}catch(e){}
@@ -238,32 +275,65 @@ function sfxBad(){tone(220,0.12,"triangle",0.07);setTimeout(()=>tone(180,0.16,"s
 function show(id){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("on"));$("#"+id).classList.add("on");}
 
 function tokenize(text){
-  // Treat צ׳ / צ' as one letter-unit; spaces as gaps. Geresh U+05F3 or ASCII '
   const out=[];
   for(let i=0;i<text.length;i++){
     const ch=text[i];
     if(ch===" "){ out.push({gap:true}); continue; }
     if(ch==="צ" && i+1<text.length && (text[i+1]==="׳" || text[i+1]==="'")){
-      out.push({ch:"צ׳", filled:false, gap:false, digraph:true});
+      out.push({ch:"צ׳", filled:false, given:false, gap:false, digraph:true});
       i++; continue;
     }
-    out.push({ch, filled:false, gap:false, digraph:false});
+    out.push({ch, filled:false, given:false, gap:false, digraph:false});
   }
   return out;
 }
-function lettersOf(text){ return tokenize(text); }
-function neededLetters(text){
-  return tokenize(text).filter(s=>!s.gap).map(s=>s.ch);
+
+/** Split slot indices into word groups (non-gap runs). */
+function wordGroups(slotsArr){
+  const groups=[]; let cur=[];
+  slotsArr.forEach((s,i)=>{
+    if(s.gap){ if(cur.length){groups.push(cur);cur=[];} }
+    else cur.push(i);
+  });
+  if(cur.length) groups.push(cur);
+  return groups;
 }
-function buildTiles(text){
-  const need=neededLetters(text);
-  const pool=[];
-  for(const c of need) pool.push(c);
-  const used=new Set(need);
-  // prefer look-alike distractors (צ׳ ~ צ / ע)
+
+/** Apply level pre-fill: mutate slots in place. Returns list of still-missing letters. */
+function applyLevelMask(slotsArr){
+  const lv=LEVELS[level];
+  const groups=wordGroups(slotsArr);
+  if(lv.mode==="oneMissing"){
+    // Each word: exactly one letter missing (random); rest given
+    groups.forEach(idxs=>{
+      const missAt=idxs[Math.floor(Math.random()*idxs.length)];
+      idxs.forEach(i=>{
+        if(i===missAt){ slotsArr[i].filled=false; slotsArr[i].given=false; }
+        else { slotsArr[i].filled=true; slotsArr[i].given=true; }
+      });
+    });
+  } else if(lv.mode==="oneShown"){
+    // Each word: exactly one letter shown (random); rest missing
+    groups.forEach(idxs=>{
+      const showAt=idxs[Math.floor(Math.random()*idxs.length)];
+      idxs.forEach(i=>{
+        if(i===showAt){ slotsArr[i].filled=true; slotsArr[i].given=true; }
+        else { slotsArr[i].filled=false; slotsArr[i].given=false; }
+      });
+    });
+  } else {
+    // allMissing — levels 3 & 4
+    slotsArr.forEach(s=>{ if(!s.gap){ s.filled=false; s.given=false; } });
+  }
+  return slotsArr.filter(s=>!s.gap && !s.filled).map(s=>s.ch);
+}
+
+function buildTiles(missingLetters){
+  const pool=missingLetters.slice();
+  const used=new Set(pool);
   const SIM={"ב":"כ","כ":"ב","ד":"ר","ר":"ד","ה":"ח","ח":"ה","ת":"ח","ו":"ז","ז":"ו","ס":"מ","מ":"ס","ע":"צ","צ":"ע","ג":"נ","נ":"ג","צ׳":"ע"};
   const distract=[];
-  for(const c of need){
+  for(const c of pool){
     const s=SIM[c];
     if(s && !used.has(s) && distract.indexOf(s)<0){distract.push(s);used.add(s);}
   }
@@ -273,36 +343,55 @@ function buildTiles(text){
     distract.push(rest.splice(i,1)[0]);
   }
   while(distract.length + pool.length < TILE_COUNT) distract.push(pick([...ALEF]));
-  const all=shuffle(pool.concat(distract.slice(0, TILE_COUNT-pool.length)));
+  const all=shuffle(pool.concat(distract.slice(0, Math.max(0, TILE_COUNT-pool.length))));
   return all.map((ch,i)=>({ch, id:i, used:false, digraph:ch.length>1}));
+}
+
+function nextEmptyIndex(){
+  for(let i=0;i<slots.length;i++){
+    const s=slots[i];
+    if(!s.gap && !s.filled) return i;
+  }
+  return -1;
 }
 
 function startGame(){
   unlockAudio();
-  queue=NAMES.slice(); // fixed order as Adi listed; could shuffle later
+  // Fisher–Yates via shuffle(); new order every start / level choice. No storage.
+  queue=shuffle(NAMES);
+  // Avoid same first name twice in a row across restarts (in-memory only).
+  if(lastFirstId && queue.length>1 && queue[0].id===lastFirstId){
+    const j=1+Math.floor(Math.random()*(queue.length-1));
+    const tmp=queue[0]; queue[0]=queue[j]; queue[j]=tmp;
+  }
+  lastFirstId=queue[0].id;
   idx=0;
+  const lv=LEVELS[level];
+  $("#lvTag").textContent=lv.short+" "+lv.stars;
+  $("#doneStars").textContent=lv.stars;
   show("sc-play");
   loadRound();
 }
 function loadRound(){
-  inputLocked=false;filledCount=0;nextExpected=0;
+  inputLocked=false;filledCount=0;
   stopSpeak();
   $("#fb").className="fb";$("#fb").textContent="";
   const item=queue[idx];
   $("#prog").textContent=(idx+1)+" מתוך "+queue.length;
   const img=$("#photo");
   img.src=item.img;img.alt=item.alt;
-  slots=lettersOf(item.text);
-  tiles=buildTiles(item.text);
+  slots=tokenize(item.text);
+  const missing=applyLevelMask(slots);
+  // Count how many the child still needs to place
+  filledCount=slots.filter(s=>!s.gap && s.filled).length;
+  tiles=buildTiles(missing);
   const tb=$("#tiles"); if(tb) tb.classList.remove("hidden");
   renderSlots();renderTiles();
-  // soft intro then name? For level 1: speak intro once on first round, else just wait.
-  // Speak nothing mandatory; child sees photo. Optional: speak name once as hint? Adi didn't ask for that.
-  // Speak a short prompt on first card only.
   if(idx===0) speakKeys(["intro"]);
 }
 function renderSlots(){
   const box=$("#slots");
+  const nextIdx=LEVELS[level].requireOrder ? nextEmptyIndex() : -1;
   let html="", open=false;
   slots.forEach((s,i)=>{
     if(s.gap){
@@ -310,7 +399,13 @@ function renderSlots(){
       return;
     }
     if(!open){html+=`<span class="word">`; open=true;}
-    html+=`<span class="slot${s.filled?" filled":""}${s.digraph?" digraph":""}" data-i="${i}" aria-label="${s.filled?s.ch:"ריק"}">${s.filled?s.ch:""}</span>`;
+    let cls="slot";
+    if(s.digraph) cls+=" digraph";
+    if(s.given) cls+=" given";
+    else if(s.filled) cls+=" filled";
+    if(i===nextIdx) cls+=" next";
+    const label=s.filled?s.ch:(i===nextIdx?"הבא":"ריק");
+    html+=`<span class="${cls}" data-i="${i}" aria-label="${label}">${s.filled?s.ch:""}</span>`;
   });
   if(open) html+="</span>";
   box.innerHTML=html;
@@ -325,16 +420,14 @@ function renderTiles(){
 
 function findSlotFor(ch){
   const lv=LEVELS[level];
-  if(lv && lv.requireOrder){
-    // level 2: must match next empty non-gap in reading order
+  if(lv.requireOrder){
     for(let i=0;i<slots.length;i++){
       const s=slots[i];
       if(s.gap||s.filled) continue;
-      return (s.ch===ch)? i : -2; // -2 = wrong order / wrong letter
+      return (s.ch===ch)? i : -2; // -2 = wrong order or wrong letter
     }
     return -1;
   }
-  // level 1: first empty matching slot from the right = lowest index in reading-order array
   for(let i=0;i<slots.length;i++){
     const s=slots[i];
     if(!s.gap && !s.filled && s.ch===ch) return i;
@@ -350,7 +443,6 @@ function onTile(e){
   if(slotIdx>=0){
     placeCorrect(tile, btn, slotIdx);
   } else {
-    // wrong
     sfxBad();vibrateBad();
     btn.classList.remove("bad");void btn.offsetWidth;btn.classList.add("bad");
     setTimeout(()=>btn.classList.remove("bad"),400);
@@ -389,8 +481,6 @@ function placeCorrect(tile, btn, slotIdx){
       onNameComplete();
     } else {
       inputLocked=false;
-      // quietly say the letter name (optional, short)
-      // skip spoken praise per letter — only SFX (Adi: don't clog the flow)
     }
   };
   if(reduce) finish();
@@ -416,8 +506,19 @@ function onNameComplete(){
   }, 180);
 }
 
-$("#btnStart").onclick=()=>{unlockAudio();startGame();};
-$("#btnAgain").onclick=()=>{unlockAudio();startGame();};
+function goLevels(){ stopSpeak(); inputLocked=false; show("sc-levels"); }
+
+$("#btnStart").onclick=()=>{unlockAudio(); goLevels();};
+$("#btnBackStart").onclick=()=>{stopSpeak(); show("sc-start");};
+document.querySelectorAll(".lv-card").forEach(b=>{
+  b.onclick=()=>{
+    level=+b.dataset.lv;
+    unlockAudio();
+    startGame();
+  };
+});
+$("#btnAgain").onclick=()=>{unlockAudio(); startGame();};
+$("#btnPickLevel").onclick=()=>goLevels();
 $("#btnToStart").onclick=()=>{stopSpeak();show("sc-start");};
 $("#btnHome").onclick=()=>{stopSpeak();inputLocked=false;show("sc-start");};
 $("#btnReplay").onclick=()=>{
@@ -432,15 +533,6 @@ $("#btnMute").onclick=()=>{
 };
 $("#btnHelp").onclick=()=>{$("#helpPanel").classList.add("on"); if(!muted) speakKeys(["help"]);};
 $("#helpClose").onclick=()=>{$("#helpPanel").classList.remove("on"); stopSpeak();};
-// Level buttons — only 1 active for now
-document.querySelectorAll(".lvbtn").forEach(b=>{
-  b.onclick=()=>{
-    if(b.disabled) return;
-    document.querySelectorAll(".lvbtn").forEach(x=>x.classList.remove("on"));
-    b.classList.add("on");
-    level=+b.dataset.lv;
-  };
-});
 })();
 </script>
 </body>
